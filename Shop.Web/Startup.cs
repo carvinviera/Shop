@@ -1,16 +1,15 @@
 namespace Shop.Web
 {
+    using Helper;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.HttpsPolicy;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using Microsoft.EntityFrameworkCore;
     using Shop.Web.Data;
-    using Shop.Web.Data.Entities;
-    using Microsoft.AspNetCore.Identity;
 
     public class Startup
     {
@@ -38,13 +37,16 @@ namespace Shop.Web
 
             services.AddControllersWithViews();
             services.AddMvc();
-            services.AddDbContext<DataContext>(cfg => 
-                cfg.UseSqlServer(this.Configuration.GetConnectionString("dbShopEntities")));
+            services.AddDbContext<DataContext>(cfg =>
+                cfg.UseSqlServer(Configuration.GetConnectionString("dbShopEntities")));
 
             services.AddTransient<SeedDB>(); //ciclo de vida mas corto
             //services.AddTransient<SeedDbCoreInDato>(); otro Seed que queramos
 
-            services.AddScoped<IRepository, Repository>();
+            //services.AddScoped<IRepository, Repository>(); se quita por implementar el Genric Repositorio y los de cada tabla
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<ICountryRepository, CountryRepository>();
+            services.AddScoped<IUserHelper, UserHelper>();
             //services.AddScoped<aplicacionBusiness>();
             //services.AddScoped<IRepository, MockRepository>(); //se la interfaz para cambiar rapidamente entre repositorios Quizas uno de prueba y
             //luego el real... o para pruebas unitarias
