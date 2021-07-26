@@ -33,7 +33,7 @@
                 return NotFound();
             }
 
-            var product = this.productRepository.GetByIdAsync(id.Value);
+            var product = await this.productRepository.GetByIdAsync(id.Value);
             if (product == null)
             {
                 return NotFound();
@@ -120,7 +120,7 @@
                 return NotFound();
             }
 
-            var product = this.productRepository.GetByIdAsync(id.Value);
+            var product = await this.productRepository.GetByIdAsync(id.Value);
             if (product == null)
             {
                 return NotFound();
